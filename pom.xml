@@ -2,12 +2,35 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.opentaxi.android</groupId>
-	<artifactId>mapsforge-bg</artifactId>
+	<groupId>com.taxi-bulgaria.map</groupId>
+	<artifactId>mapsforge</artifactId>
 	<version>0.4.0-SNAPSHOT</version>
 	<packaging>apklib</packaging>
 	<name>mapsforge-bg</name>
 	<url>http://taxi-bulgaria.com</url>
+    <inceptionYear>2014</inceptionYear>
+
+    <developers>
+        <developer>
+            <name>Stanimir Marinov</name>
+            <email>stanimir@taxi-bulgaria.com</email>
+            <id>stanimir</id>
+            <url>http://taxi-bulgaria.com</url>
+            <timezone>+2</timezone>
+            <roles>
+                <role>developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>Apache License Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
     <organization>
         <name>Taxi-Bulgaria</name>
         <url>http://taxi-bulgaria.com</url>
@@ -18,6 +41,12 @@
         <android-emulator>8</android-emulator>
 		<!--<targetJdk>1.6</targetJdk>-->
 	</properties>
+
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
 
 	<build>
         <finalName>${project.artifactId}</finalName>
@@ -47,23 +76,41 @@
                     <undeployBeforeDeploy>true</undeployBeforeDeploy>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.2.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.4.1</version>
+            </plugin>
 		</plugins>
 	</build>
 
 	<dependencies>
+        <dependency>
+            <groupId>android</groupId>
+            <artifactId>android</artifactId>
+            <version>4.4.2_r2</version>
+            <scope>provided</scope>
+        </dependency>
+
 		<dependency>
 			<groupId>org.mapsforge</groupId>
 			<artifactId>mapsforge-map-android</artifactId>
 			<type>apklib</type>
-			<version>${project.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>android</groupId>
-			<artifactId>android</artifactId>
-			<version>4.4.2_r2</version>
-			<!--<version>4.4_r1</version>-->
-			<scope>provided</scope>
+			<version>0.4.0-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
