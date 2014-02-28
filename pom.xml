@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.opentaxi.android</groupId>
+	<artifactId>mapsforge-bg</artifactId>
+	<version>0.4.0-SNAPSHOT</version>
+	<packaging>apklib</packaging>
+	<name>mapsforge-bg</name>
+	<url>http://taxi-bulgaria.com</url>
+    <organization>
+        <name>Taxi-Bulgaria</name>
+        <url>http://taxi-bulgaria.com</url>
+    </organization>
+
+	<properties>
+        <android-platform>17</android-platform>
+        <android-emulator>8</android-emulator>
+		<!--<targetJdk>1.6</targetJdk>-->
+	</properties>
+
+	<build>
+        <finalName>${project.artifactId}</finalName>
+		<plugins>
+            <plugin>
+                <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+                <artifactId>android-maven-plugin</artifactId>
+                <version>3.8.2</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <dex>
+                        <jvmArguments>
+                            <jvmArgument>-Xmx512M</jvmArgument>
+                        </jvmArguments>
+                    </dex>
+                    <genDirectory>gen</genDirectory>
+                    <genDirectoryAidl>gen</genDirectoryAidl>
+                    <extractDuplicates>true</extractDuplicates>
+                    <sdk>
+                        <platform>${android-platform}</platform>
+                        <path>/home/stanimir/android-sdk-linux</path>
+                    </sdk>
+                    <emulator>
+                        <avd>${android-emulator}</avd>
+                    </emulator>
+                    <!--<deleteConflictingFiles>true</deleteConflictingFiles>-->
+                    <undeployBeforeDeploy>true</undeployBeforeDeploy>
+                </configuration>
+            </plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.mapsforge</groupId>
+			<artifactId>mapsforge-map-android</artifactId>
+			<type>apklib</type>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>android</groupId>
+			<artifactId>android</artifactId>
+			<version>4.4.2_r2</version>
+			<!--<version>4.4_r1</version>-->
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.android</groupId>
+			<artifactId>support-v4</artifactId>
+			<version>r7</version>
+		</dependency>
+	</dependencies>
+
+    <repositories>
+        <repository>
+            <id>snapshots-repository</id>
+            <name>Sonatype oss snapshot repo</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </repository>
+    </repositories>
+</project>
