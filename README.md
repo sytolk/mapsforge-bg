@@ -1,4 +1,4 @@
-#Mapsforge Bg Android Map module for <a href="https://play.google.com/store/apps/details?id=com.opentaxi.android" rel="Taxi Bulgaria">![Taxi Bulgaria](https://developer.android.com/images/brand/en_generic_rgb_wo_60.png)</a>
+#Mapsforge Bg Android Map module <a href="https://play.google.com/store/apps/details?id=com.opentaxi.android" rel="Taxi Bulgaria">![Taxi Bulgaria](https://developer.android.com/images/brand/en_generic_rgb_wo_60.png)</a>
 
 You can download the app from [opera store](http://m.android-4-0.apps.opera.com/en_bg/catalog.php?search=taxi+bulgaria) too.
 
