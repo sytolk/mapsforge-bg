@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.taxi-bulgaria.map</groupId>
 	<artifactId>mapsforge</artifactId>
-	<version>0.4.0-SNAPSHOT</version>
+	<version>0.4.1-SNAPSHOT</version>
 	<packaging>apklib</packaging>
 	<name>mapsforge-bg</name>
 	<url>http://taxi-bulgaria.com</url>

@@ -178,6 +178,8 @@ public class FilePicker extends Activity implements AdapterView.OnItemClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_file_picker);
 
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
         this.filePickerIconAdapter = new FilePickerIconAdapter(this);
         GridView gridView = (GridView) findViewById(R.id.filePickerView);
         gridView.setOnItemClickListener(this);
@@ -190,7 +192,16 @@ public class FilePicker extends Activity implements AdapterView.OnItemClickListe
         }
     }
 
-	/*@Override
+    private ProgressDialog getProgressDialog() {
+        ProgressDialog pDialog = new ProgressDialog(this);
+        pDialog.setMessage(getString(R.string.download_progress));
+        pDialog.setIndeterminate(false);
+        pDialog.setMax(100);
+        pDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        pDialog.setCancelable(true);
+        return pDialog;
+    }
+    /*@Override
     protected Dialog onCreateDialog(int id) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		switch (id) {
@@ -233,26 +244,33 @@ public class FilePicker extends Activity implements AdapterView.OnItemClickListe
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                final ProgressDialog pDialog = new ProgressDialog(FilePicker.this);
-                pDialog.setMessage(getString(R.string.download_progress));
-                pDialog.setIndeterminate(false);
-                pDialog.setMax(100);
-                pDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                pDialog.setCancelable(true);
+                final ProgressDialog pDialog = getProgressDialog();
                 pDialog.show();
 
                 AsyncTask<Context, Integer, File> mapTask = new DownloadMapTask(new DownloadMapTask.OnTaskCompleted() {
 
                     @Override
                     public void onTaskCompleted(File path) {
-                        pDialog.dismiss();
+                        try {
+                            if (!FilePicker.this.isFinishing())
+                                pDialog.dismiss();
+                        } catch (Exception e) {
+
+                        }
                         setResult(RESULT_OK, new Intent().putExtra(SELECTED_FILE, path.getAbsolutePath()));
                         finish();
                     }
 
                     @Override
                     public void progressUpdated(int progress) {
-                        pDialog.setProgress(progress);
+                        try {
+                            if (!FilePicker.this.isFinishing()) {
+                                if (!pDialog.isShowing()) pDialog.show();
+                                pDialog.setProgress(progress);
+                            }
+                        } catch (Exception e) {
+
+                        }
                     }
                 });
 
