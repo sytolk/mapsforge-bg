@@ -62,7 +62,7 @@ public class LocationOverlayMapViewer extends BasicMapViewerXml {
 
     public void onResume() {
         super.onResume();
-        this.myLocationOverlay.enableMyLocation(true);
+        if (this.myLocationOverlay != null) this.myLocationOverlay.enableMyLocation(true);
     }
 
     @Override

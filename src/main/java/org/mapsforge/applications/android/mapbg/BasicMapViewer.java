@@ -253,7 +253,7 @@ public class BasicMapViewer extends Activity implements OnSharedPreferenceChange
     /**
      * Sets all file filters and starts the FilePicker to select a map file.
      */
-    private synchronized void startMapFilePicker() {
+    protected synchronized void startMapFilePicker() {
         FilePicker.setFileDisplayFilter(FILE_FILTER_EXTENSION_MAP);
         FilePicker.setFileSelectFilter(new ValidMapFile());
         Intent fileIntent = new Intent(this, FilePicker.class);
