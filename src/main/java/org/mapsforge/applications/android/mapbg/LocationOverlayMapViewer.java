@@ -57,6 +57,7 @@ public class LocationOverlayMapViewer extends BasicMapViewerXml {
     @Override
     public void onPause() {
         myLocationOverlay.disableMyLocation();
+        //myLocationOverlay.onDestroy(); //this.bitmap.decrementRefCount();
         super.onPause();
     }
 
@@ -71,6 +72,9 @@ public class LocationOverlayMapViewer extends BasicMapViewerXml {
         // a marker to show at the position
         Drawable drawable = getResources().getDrawable(R.drawable.ic_maps_indicator_current_position_anim1);
         Bitmap my_position = AndroidGraphicFactory.convertToBitmap(drawable);
+        // since we want to keep the bitmap around, we have to increment
+        // its ref count, otherwise it gets recycled automatically when it is replaced with the other colour.
+        my_position.incrementRefCount();
         // create the overlay and tell it to follow the location
         this.myLocationOverlay = new MyLocationOverlay(this, this.mapViewPositions.get(0), my_position);
         this.myLocationOverlay.setSnapToLocationEnabled(true);
