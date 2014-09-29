@@ -37,7 +37,7 @@ public class DownloadMapTask extends AsyncTask<Context, Integer, File> {
     protected File doInBackground(Context... params) {
 
         try {
-            URL url = new URL("http://taxi-bulgaria.com:8888/" + mapFile);
+            URL url = new URL("http://taxi-bulgaria.com/" + mapFile);
             HttpURLConnection c = (HttpURLConnection) url.openConnection();
             c.setRequestMethod("GET");
             c.setDoOutput(true);

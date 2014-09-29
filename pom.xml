@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.taxi-bulgaria.map</groupId>
 	<artifactId>mapsforge</artifactId>
-	<version>0.4.2-SNAPSHOT</version>
+	<version>0.4.4-SNAPSHOT</version>
 	<packaging>apklib</packaging>
 	<name>mapsforge-bg</name>
 	<url>http://taxi-bulgaria.com</url>
@@ -40,6 +40,7 @@
         <android-platform>17</android-platform>
         <android-emulator>8</android-emulator>
 		<!--<targetJdk>1.6</targetJdk>-->
+        <java.version>1.6</java.version>
 	</properties>
 
     <parent>
@@ -51,6 +52,15 @@
 	<build>
         <finalName>${project.artifactId}</finalName>
 		<plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                 <artifactId>android-maven-plugin</artifactId>
@@ -109,8 +119,9 @@
 		<dependency>
 			<groupId>org.mapsforge</groupId>
 			<artifactId>mapsforge-map-android</artifactId>
-			<type>apklib</type>
-			<version>0.4.0-SNAPSHOT</version>
+			<!--<type>apklib</type>-->
+			<!--<version>0.4.0-SNAPSHOT</version>-->
+			<version>0.4.3</version>
 		</dependency>
 
 		<dependency>

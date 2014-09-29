@@ -39,7 +39,7 @@ public class LocationOverlayMapViewer extends BasicMapViewerXml {
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (requestCode == SELECT_MAP_FILE) {
             if (resultCode == RESULT_OK) {
-                this.myLocationOverlay.setSnapToLocationEnabled(false);
+                if (this.myLocationOverlay != null) this.myLocationOverlay.setSnapToLocationEnabled(false);
                 if (intent != null && intent.getStringExtra(FilePicker.SELECTED_FILE) != null) {
                     mapFileName = intent.getStringExtra(FilePicker.SELECTED_FILE);
                     Log.i("L onActivityResult", "mapFileName:" + mapFileName);
@@ -47,7 +47,7 @@ public class LocationOverlayMapViewer extends BasicMapViewerXml {
                     preferencesFacade.save();
                     redrawLayers();
                 } else Log.e("L onActivityResult", "intent:" + intent);
-            } else if (resultCode == RESULT_CANCELED && mapFileName == null) {
+            } else if (resultCode == RESULT_CANCELED) { //&& mapFileName == null) {
                 Log.e("L onActivityResult", "resultCode:" + resultCode);
                 finish();
             } else Log.e("L onActivityResult", "resultCode:" + resultCode);
@@ -56,7 +56,7 @@ public class LocationOverlayMapViewer extends BasicMapViewerXml {
 
     @Override
     public void onPause() {
-        myLocationOverlay.disableMyLocation();
+        if (this.myLocationOverlay != null) this.myLocationOverlay.disableMyLocation();
         //myLocationOverlay.onDestroy(); //this.bitmap.decrementRefCount();
         super.onPause();
     }
@@ -80,6 +80,9 @@ public class LocationOverlayMapViewer extends BasicMapViewerXml {
         this.myLocationOverlay.setSnapToLocationEnabled(true);
         this.layerManagers.get(0).getLayers().add(this.myLocationOverlay);
 
+        //fast location fix
+        this.myLocationOverlay.enableMyLocation(true);
+
         ToggleButton snapToLocationView = (ToggleButton) findViewById(R.id.snapToLocationView);
         snapToLocationView.setVisibility(View.VISIBLE);
         snapToLocationView.setOnClickListener(new View.OnClickListener() {
@@ -90,7 +93,7 @@ public class LocationOverlayMapViewer extends BasicMapViewerXml {
         });
     }
 
-    void invertSnapToLocation() {
+    protected void invertSnapToLocation() {
         if (this.myLocationOverlay != null) {
             if (this.myLocationOverlay.isSnapToLocationEnabled()) {
                 this.myLocationOverlay.setSnapToLocationEnabled(false);

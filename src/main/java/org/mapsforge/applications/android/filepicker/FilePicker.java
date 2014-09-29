@@ -192,6 +192,11 @@ public class FilePicker extends Activity implements AdapterView.OnItemClickListe
         }
     }
 
+    /*@Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }*/
+
     private ProgressDialog getProgressDialog() {
         ProgressDialog pDialog = new ProgressDialog(this);
         pDialog.setMessage(getString(R.string.download_progress));

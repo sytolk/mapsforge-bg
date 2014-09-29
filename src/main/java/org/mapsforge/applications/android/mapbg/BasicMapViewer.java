@@ -92,7 +92,7 @@ public class BasicMapViewer extends Activity implements OnSharedPreferenceChange
                     preferencesFacade.save();
                     redrawLayers();
                 } else Log.e(TAG, "intent:" + intent);
-            } else if (resultCode == RESULT_CANCELED && mapFileName == null) {
+            } else if (resultCode == RESULT_CANCELED){ //&& mapFileName == null) {
                 Log.e(TAG, "resultCode:" + resultCode);
                 finish();
             } else Log.e(TAG, "resultCode:" + resultCode);
