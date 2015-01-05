@@ -11,7 +11,8 @@
  *
  * You should have received a copy of the GNU Lesser General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
- */
+ *//*
+
 package org.mapsforge.applications.android.mapbg;
 
 import android.content.SharedPreferences;
@@ -128,3 +129,4 @@ public class AndroidPreferencesAPI8 implements PreferencesFacade {
         }
     }
 }
+*/

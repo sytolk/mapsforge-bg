@@ -4,12 +4,6 @@ You can download the app from [opera store](http://m.android-4-0.apps.opera.com/
 
 web page: [taxi-bulgaria](http://taxi-bulgaria.com)
 
-##Development
-
-For mapsforge API 8 support include two [patch](http://code.google.com/p/mapsforge/issues/detail?id=484) files.
-
-and use AndroidPreferencesAPI8.java instead of AndroidPreferences.java
-
 ##License
 
 Copyright [2013] [Stanimir Marinov]

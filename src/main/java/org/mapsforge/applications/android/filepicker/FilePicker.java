@@ -31,8 +31,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import org.mapsforge.applications.android.R;
 import org.mapsforge.applications.android.filefilter.ValidFileFilter;
-import org.mapsforge.applications.android.mapbg.R;
 import org.mapsforge.applications.android.task.DownloadMapTask;
 
 import java.io.File;
@@ -260,7 +260,7 @@ public class FilePicker extends Activity implements AdapterView.OnItemClickListe
                             if (!FilePicker.this.isFinishing())
                                 pDialog.dismiss();
                         } catch (Exception e) {
-
+                            e.printStackTrace();
                         }
                         setResult(RESULT_OK, new Intent().putExtra(SELECTED_FILE, path.getAbsolutePath()));
                         finish();
@@ -274,7 +274,7 @@ public class FilePicker extends Activity implements AdapterView.OnItemClickListe
                                 pDialog.setProgress(progress);
                             }
                         } catch (Exception e) {
-
+                            e.printStackTrace();
                         }
                     }
                 });
@@ -337,7 +337,8 @@ public class FilePicker extends Activity implements AdapterView.OnItemClickListe
         if (this.currentDirectory != null) {
             editor.putString(CURRENT_DIRECTORY, this.currentDirectory.getAbsolutePath());
         }
-        editor.commit();
+        editor.apply(); //editor.commit();
+        finish();
     }
 
     @Override

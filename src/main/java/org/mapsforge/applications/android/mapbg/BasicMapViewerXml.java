@@ -11,19 +11,24 @@
  *
  * You should have received a copy of the GNU Lesser General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
- */
+ *//*
+
 package org.mapsforge.applications.android.mapbg;
 
 import org.mapsforge.map.android.view.MapView;
 
+*/
 /**
  * A simple application which demonstrates how to use a MapView by initializing
  * it from an XML layout resource.
- */
+ *//*
+
 public class BasicMapViewerXml extends BasicMapViewer {
-	/**
+	*/
+/**
 	 * @return the layout to be used
-	 */
+	 *//*
+
 	protected int getLayoutId() {
 		return R.layout.mapviewer;
 	}
@@ -36,3 +41,4 @@ public class BasicMapViewerXml extends BasicMapViewer {
 		return (MapView) findViewById(R.id.mapView);
 	}
 }
+*/

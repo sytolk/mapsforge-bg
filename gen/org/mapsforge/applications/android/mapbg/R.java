@@ -9,67 +9,138 @@ package org.mapsforge.applications.android.mapbg;
 
 public final class R {
     public static final class array {
-        public static final int pref_scale_entries=0x7f050000;
-        public static final int pref_scale_values=0x7f050001;
+        public static int pref_r4style_entries=0x7f050006;
+        public static int pref_r4style_values=0x7f050007;
+        public static int pref_scale_entries=0x7f050000;
+        public static int pref_scale_values=0x7f050001;
+        public static int pref_scalebar_entries=0x7f050004;
+        public static int pref_scalebar_values=0x7f050005;
+        public static int pref_textwidth_entries=0x7f050002;
+        public static int pref_textwidth_values=0x7f050003;
     }
     public static final class attr {
     }
     public static final class drawable {
-        public static final int balloon_overlay_unfocused=0x7f020000;
-        public static final int btn_snap_normal=0x7f020001;
-        public static final int btn_snap_pressed=0x7f020002;
-        public static final int btn_snap_selected=0x7f020003;
-        public static final int file_picker_back=0x7f020004;
-        public static final int file_picker_file=0x7f020005;
-        public static final int file_picker_folder=0x7f020006;
-        public static final int ic_maps_indicator_current_position_anim1=0x7f020007;
-        public static final int ic_menu_mylocation=0x7f020008;
-        public static final int ic_menu_preferences=0x7f020009;
-        public static final int snap_to_position=0x7f02000a;
+        public static int balloon_overlay_unfocused=0x7f020000;
+        public static int btn_snap_normal=0x7f020001;
+        public static int btn_snap_pressed=0x7f020002;
+        public static int btn_snap_selected=0x7f020003;
+        public static int file_picker_back=0x7f020004;
+        public static int file_picker_file=0x7f020005;
+        public static int file_picker_folder=0x7f020006;
+        public static int ic_maps_indicator_current_position_anim1=0x7f020007;
+        public static int ic_menu_mylocation=0x7f020008;
+        public static int ic_menu_preferences=0x7f020009;
+        public static int snap_to_position=0x7f02000a;
     }
     public static final class id {
-        public static final int attribution=0x7f080007;
-        public static final int filePickerView=0x7f080000;
-        public static final int latitude=0x7f080001;
-        public static final int longitude=0x7f080002;
-        public static final int mainView=0x7f080005;
-        public static final int mapView=0x7f080006;
-        public static final int menu_position_enter_coordinates=0x7f080009;
-        public static final int menu_preferences=0x7f08000a;
-        public static final int snapToLocationView=0x7f080008;
-        public static final int zoomlevel=0x7f080003;
-        public static final int zoomlevelValue=0x7f080004;
+        public static int filePickerView=0x7f080000;
+        public static int item_detail_container=0x7f080002;
+        public static int item_list=0x7f080001;
+        public static int latitude=0x7f080003;
+        public static int longitude=0x7f080004;
+        public static int mainView=0x7f080007;
+        public static int mapView=0x7f080008;
+        public static int menu_position_enter_coordinates=0x7f08000a;
+        public static int menu_preferences=0x7f08000b;
+        public static int menu_svgclear=0x7f08000c;
+        public static int snapToLocationView=0x7f080009;
+        public static int zoomlevel=0x7f080005;
+        public static int zoomlevelValue=0x7f080006;
     }
     public static final class layout {
-        public static final int activity_file_picker=0x7f030000;
-        public static final int dialog_enter_coordinates=0x7f030001;
-        public static final int mapviewer=0x7f030002;
+        public static int activity_file_picker=0x7f030000;
+        /** 
+    Layout alias to replace the single-pane version of the layout with a
+    two-pane version on Large screens.
+
+    For more on layout aliases, see:
+    http://developer.android.com/training/multiscreen/screensizes.html#TaskUseAliasFilters
+    
+         */
+        public static int activity_item_list=0x7f030004;
+        public static int activity_item_twopane=0x7f030001;
+        public static int dialog_enter_coordinates=0x7f030002;
+        public static int mapviewer=0x7f030003;
     }
     public static final class menu {
-        public static final int options_menu=0x7f070000;
+        public static int options_menu=0x7f070000;
     }
     public static final class string {
-        public static final int cancelbutton=0x7f060002;
-        public static final int dialog_location_title=0x7f060009;
-        public static final int download=0x7f06000d;
-        public static final int download_progress=0x7f06000e;
+        public static int cancelbutton=0x7f060004;
+        public static int copyright_osm=0x7f060000;
+        public static int dialog_location_title=0x7f06003b;
+        public static int download=0x7f060042;
+        public static int download_progress=0x7f060043;
         /** filepicker
          */
-        public static final int error=0x7f06000a;
-        public static final int file_invalid=0x7f06000b;
-        public static final int file_select=0x7f060010;
-        public static final int file_select_title=0x7f06000f;
-        public static final int latitude=0x7f060004;
-        public static final int longitude=0x7f060005;
-        public static final int menu_position_enter_coordinates=0x7f060001;
-        public static final int menu_preferences=0x7f060000;
-        public static final int okbutton=0x7f060003;
-        public static final int preferences_scale=0x7f060007;
-        public static final int preferences_scale_desc=0x7f060008;
-        public static final int select=0x7f06000c;
-        public static final int zoomlevel=0x7f060006;
+        public static int error=0x7f06003f;
+        public static int file_invalid=0x7f060040;
+        public static int file_select=0x7f060045;
+        public static int file_select_title=0x7f060044;
+        public static int latitude=0x7f060006;
+        public static int longitude=0x7f060007;
+        public static int menu_position_enter_coordinates=0x7f060002;
+        public static int menu_preferences=0x7f060001;
+        public static int menu_svgclear=0x7f060003;
+        public static int okbutton=0x7f060005;
+        public static int preferences_category_tilecache=0x7f060014;
+        public static int preferences_category_wayfiltering=0x7f06000f;
+        public static int preferences_debug_timing=0x7f060019;
+        public static int preferences_debug_timing_desc=0x7f06001a;
+        public static int preferences_r4_accommodation=0x7f06001d;
+        public static int preferences_r4_accommodation_desc=0x7f06001e;
+        public static int preferences_r4_amenities=0x7f060023;
+        public static int preferences_r4_amenities_desc=0x7f060024;
+        public static int preferences_r4_areas=0x7f060035;
+        public static int preferences_r4_areas_desc=0x7f060036;
+        public static int preferences_r4_barriers=0x7f06002b;
+        public static int preferences_r4_barriers_desc=0x7f06002c;
+        public static int preferences_r4_buildings=0x7f060031;
+        public static int preferences_r4_buildings_desc=0x7f060032;
+        public static int preferences_r4_emergency=0x7f06001b;
+        public static int preferences_r4_emergency_desc=0x7f06001c;
+        public static int preferences_r4_food=0x7f060027;
+        public static int preferences_r4_food_desc=0x7f060028;
+        public static int preferences_r4_nature=0x7f060033;
+        public static int preferences_r4_nature_desc=0x7f060034;
+        public static int preferences_r4_places=0x7f06002f;
+        public static int preferences_r4_places_desc=0x7f060030;
+        public static int preferences_r4_public_transport=0x7f060025;
+        public static int preferences_r4_public_transport_desc=0x7f060026;
+        public static int preferences_r4_roads=0x7f060037;
+        public static int preferences_r4_roads_desc=0x7f060038;
+        public static int preferences_r4_shopping=0x7f060021;
+        public static int preferences_r4_shopping_desc=0x7f060022;
+        public static int preferences_r4_sports=0x7f06002d;
+        public static int preferences_r4_sports_desc=0x7f06002e;
+        public static int preferences_r4_tourism_poi=0x7f06001f;
+        public static int preferences_r4_tourism_poi_desc=0x7f060020;
+        public static int preferences_r4_traffic=0x7f060029;
+        public static int preferences_r4_traffic_desc=0x7f06002a;
+        public static int preferences_r4_waterbodies=0x7f060039;
+        public static int preferences_r4_waterbodies_desc=0x7f06003a;
+        public static int preferences_scale=0x7f060009;
+        public static int preferences_scale_desc=0x7f06000a;
+        public static int preferences_scalebar=0x7f06000b;
+        public static int preferences_scalebar_desc=0x7f06000c;
+        public static int preferences_textwidth=0x7f06000d;
+        public static int preferences_textwidth_desc=0x7f06000e;
+        public static int preferences_tilecache_queuelimit=0x7f060017;
+        public static int preferences_tilecache_queuelimit_desc=0x7f060018;
+        public static int preferences_tilecache_threading=0x7f060015;
+        public static int preferences_tilecache_threading_desc=0x7f060016;
+        public static int preferences_wayfiltering=0x7f060010;
+        public static int preferences_wayfiltering_desc=0x7f060011;
+        public static int preferences_wayfiltering_distance=0x7f060012;
+        public static int preferences_wayfiltering_distance_desc=0x7f060013;
+        public static int select=0x7f060041;
+        public static int startup_dontshowagain=0x7f06003c;
+        public static int startup_message=0x7f06003d;
+        public static int startup_message_tilestore=0x7f06003e;
+        public static int zoomlevel=0x7f060008;
     }
     public static final class xml {
-        public static final int preferences=0x7f040000;
+        public static int preferences=0x7f040000;
     }
 }

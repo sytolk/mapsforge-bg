@@ -20,7 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import org.mapsforge.applications.android.mapbg.R;
+import org.mapsforge.applications.android.R;
 
 import java.io.File;
 

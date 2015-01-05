@@ -12,7 +12,8 @@
  *
  * You should have received a copy of the GNU Lesser General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
- */
+ *//*
+
 package org.mapsforge.applications.android.mapbg;
 
 import android.app.Activity;
@@ -37,6 +38,7 @@ import org.mapsforge.applications.android.filefilter.ValidMapFile;
 import org.mapsforge.applications.android.filepicker.FilePicker;
 import org.mapsforge.core.model.LatLong;
 import org.mapsforge.core.model.MapPosition;
+import org.mapsforge.map.android.AndroidPreferences;
 import org.mapsforge.map.android.util.AndroidUtil;
 import org.mapsforge.map.android.view.MapView;
 import org.mapsforge.map.layer.Layer;
@@ -56,9 +58,11 @@ import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
 
+*/
 /**
  * A simple application which demonstrates how to use a MapView.
- */
+ *//*
+
 public class BasicMapViewer extends Activity implements OnSharedPreferenceChangeListener {
     protected static final String TAG = "BasicMapViewer";
     protected static final int DIALOG_ENTER_COORDINATES = 2923878;
@@ -167,7 +171,7 @@ public class BasicMapViewer extends Activity implements OnSharedPreferenceChange
 
     protected void createSharedPreferences() {
         SharedPreferences sp = this.getSharedPreferences(getPersistableId(), MODE_PRIVATE);
-        this.preferencesFacade = new AndroidPreferencesAPI8(sp);
+        this.preferencesFacade = new AndroidPreferences(sp); //AndroidPreferencesAPI8
     }
 
     protected void createTileCaches() {
@@ -211,18 +215,22 @@ public class BasicMapViewer extends Activity implements OnSharedPreferenceChange
                 final MapFileInfo mapFileInfo = mapDatabase.getMapFileInfo();
                 if (mapFileInfo != null && mapFileInfo.startPosition != null) {
                     return new MapPosition(mapFileInfo.startPosition, (byte) mapFileInfo.startZoomLevel);
-                } /*else {
+                } */
+/*else {
                 return new MapPosition(new LatLong(52.517037, 13.38886), (byte) 12);
-			}*/
+			}*//*
+
             }
         }
         //throw new IllegalArgumentException("Invalid Map File " + getMapFileName());
         return new MapPosition(new LatLong(42.5, 27.468), (byte) 17);
     }
 
-    /**
+    */
+/**
      * @return a map file
-     */
+     *//*
+
     protected File getMapFile() {
         if (mapFileName == null) mapFileName = preferencesFacade.getString(PREFERENCE_MAP_PATH, null);
         if (mapFileName != null) {
@@ -250,9 +258,11 @@ public class BasicMapViewer extends Activity implements OnSharedPreferenceChange
         }
     }
 
-    /**
+    */
+/**
      * Sets all file filters and starts the FilePicker to select a map file.
-     */
+     *//*
+
     protected synchronized void startMapFilePicker() {
         FilePicker.setFileDisplayFilter(FILE_FILTER_EXTENSION_MAP);
         FilePicker.setFileSelectFilter(new ValidMapFile());
@@ -261,35 +271,45 @@ public class BasicMapViewer extends Activity implements OnSharedPreferenceChange
         startActivityForResult(fileIntent, SELECT_MAP_FILE);
     }
 
-    /**
+    */
+/**
      * @return the map file name to be used
-     */
-    /*protected String getMapFileName() {
+     *//*
+
+    */
+/*protected String getMapFileName() {
         return "1bulgaria.map";//"germany.map";
-    }*/
+    }*//*
+
     protected MapView getMapView() {
         MapView mv = new MapView(this);
         setContentView(mv);
         return mv;
     }
 
-    /**
+    */
+/**
      * @return the id that is used to save this mapview
-     */
+     *//*
+
     protected String getPersistableId() {
         return this.getClass().getSimpleName();
     }
 
-    /**
+    */
+/**
      * @return the rendertheme for this viewer
-     */
+     *//*
+
     protected XmlRenderTheme getRenderTheme() {
         return InternalRenderTheme.OSMARENDER;
     }
 
-    /**
+    */
+/**
      * @return the screen ratio that the mapview takes up (for cache calculation)
-     */
+     *//*
+
     protected float getScreenRatio() {
         return 1.0f;
     }
@@ -298,12 +318,14 @@ public class BasicMapViewer extends Activity implements OnSharedPreferenceChange
         return true;
     }
 
-    /**
+    */
+/**
      * initializes the map view position.
      *
      * @param mvp the map view position to be set
      * @return the mapviewposition set
-     */
+     *//*
+
     protected MapViewPosition initializePosition(MapViewPosition mvp) {
         LatLong center = mvp.getCenter();
 
@@ -435,10 +457,13 @@ public class BasicMapViewer extends Activity implements OnSharedPreferenceChange
         }
     }
 
-    /**
+    */
+/**
      * sets the content view if it has not been set already.
-     */
+     *//*
+
     protected void setContentView() {
         setContentView(this.mapViews.get(0));
     }
 }
+*/

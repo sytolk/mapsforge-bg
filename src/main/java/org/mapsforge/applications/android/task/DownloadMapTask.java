@@ -38,7 +38,19 @@ public class DownloadMapTask extends AsyncTask<Context, Integer, File> {
 
         try {
             URL url = new URL("http://taxi-bulgaria.com/" + mapFile);
+            // URL url = new URL("http://taxi-bulgaria.com:9191/" + mapFile);
             HttpURLConnection c = (HttpURLConnection) url.openConnection();
+
+            /*if(ISSUE_DOWNLOAD_STATUS.intValue()==ECMConstant.ECM_DOWNLOADING){   todo file resume support
+                File file=new File(DESTINATION_PATH);
+                if(file.exists()){
+                    downloaded = (int) file.length();
+                    connection.setRequestProperty("Range", "bytes="+(file.length())+"-");
+                }
+            }else{
+                connection.setRequestProperty("Range", "bytes=" + downloaded + "-");
+            }*/
+
             c.setRequestMethod("GET");
             c.setDoOutput(true);
             c.connect();

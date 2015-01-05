@@ -8,6 +8,9 @@
       <configuration>
         <option name="GEN_FOLDER_RELATIVE_PATH_APT" value="/target/generated-sources/r" />
         <option name="GEN_FOLDER_RELATIVE_PATH_AIDL" value="/target/generated-sources/aidl" />
+        <option name="MANIFEST_FILE_RELATIVE_PATH" value="/src/main/AndroidManifest.xml" />
+        <option name="RES_FOLDER_RELATIVE_PATH" value="/src/main/res" />
+        <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/src/main/assets" />
         <option name="CUSTOM_APK_RESOURCE_FOLDER" value="/target/generated-sources/combined-resources/res" />
         <option name="APK_PATH" value="/target/mapsforge-bg.apk" />
         <option name="RUN_PROCESS_RESOURCES_MAVEN_TASK" value="false" />
@@ -33,16 +36,15 @@
       <excludeFolder url="file://$MODULE_DIR$/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/target/maven-status" />
     </content>
-    <orderEntry type="jdk" jdkName="Maven Android API 17 Platform" jdkType="Android SDK" />
+    <orderEntry type="jdk" jdkName="Maven Android API 17 Platform (1)" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: android:android:4.4.2_r2" level="project" />
-    <orderEntry type="library" name="Maven: org.mapsforge:mapsforge-map-android:0.4.3" level="project" />
-    <orderEntry type="library" name="Maven: org.mapsforge:mapsforge-core:0.4.3" level="project" />
-    <orderEntry type="library" name="Maven: org.mapsforge:mapsforge-map-reader:0.4.3" level="project" />
-    <orderEntry type="library" name="Maven: org.mapsforge:mapsforge-map:0.4.3" level="project" />
-    <orderEntry type="library" name="Maven: org.mapsforge:svg-android:0.4.3" level="project" />
+    <orderEntry type="library" name="Maven: org.mapsforge:mapsforge-map-android:0.5.0" level="project" />
+    <orderEntry type="library" name="Maven: org.mapsforge:mapsforge-core:0.5.0" level="project" />
+    <orderEntry type="library" name="Maven: org.mapsforge:mapsforge-map-reader:0.5.0" level="project" />
+    <orderEntry type="library" name="Maven: org.mapsforge:mapsforge-map:0.5.0" level="project" />
     <orderEntry type="library" name="Maven: net.sf.kxml:kxml2:2.3.0" level="project" />
+    <orderEntry type="library" name="Maven: com.caverock:androidsvg:1.2.2-beta-1" level="project" />
     <orderEntry type="library" name="Maven: com.google.android:support-v4:r7" level="project" />
   </component>
 </module>
-
