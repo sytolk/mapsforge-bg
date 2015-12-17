@@ -32,7 +32,6 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import org.mapsforge.applications.android.R;
-import org.mapsforge.applications.android.filefilter.ValidFileFilter;
 import org.mapsforge.applications.android.task.DownloadMapTask;
 
 import java.io.File;
@@ -49,7 +48,7 @@ import java.util.Comparator;
  * A {@link java.io.FileFilter} can be activated via {@link #setFileDisplayFilter(java.io.FileFilter)} to restrict the displayed files
  * and folders. By default all files and folders are visible.
  * <p/>
- * Another <code>FileFilter</code> can be applied via {@link #setFileSelectFilter(ValidFileFilter)} to check if a
+ * Another <code>FileFilter</code> can be applied via {@link #} to check if a
  * selected file is valid before its path is returned. By default all files are considered as valid and can be selected.
  */
 public class FilePicker extends Activity implements AdapterView.OnItemClickListener {   //SharedPreferences.OnSharedPreferenceChangeListener,
@@ -64,7 +63,7 @@ public class FilePicker extends Activity implements AdapterView.OnItemClickListe
     //private static final int DIALOG_FILE_SELECT = 1;
     private static Comparator<File> fileComparator = getDefaultFileComparator();
     private static FileFilter fileDisplayFilter;
-    private static ValidFileFilter fileSelectFilter;
+    private static FileFilter fileSelectFilter;
     public static final String PREFERENCES_FILE = "FilePicker";
 
     /**
@@ -93,7 +92,7 @@ public class FilePicker extends Activity implements AdapterView.OnItemClickListe
      *
      * @param fileSelectFilter the file selection filter (may be null).
      */
-    public static void setFileSelectFilter(ValidFileFilter fileSelectFilter) {
+    public static void setFileSelectFilter(FileFilter fileSelectFilter) {
         FilePicker.fileSelectFilter = fileSelectFilter;
     }
 

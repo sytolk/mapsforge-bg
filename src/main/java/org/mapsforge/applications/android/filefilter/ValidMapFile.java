@@ -14,27 +14,36 @@
  */
 package org.mapsforge.applications.android.filefilter;
 
-import org.mapsforge.map.reader.MapDatabase;
-import org.mapsforge.map.reader.header.FileOpenResult;
+import org.mapsforge.map.datastore.MapDataStore;
+import org.mapsforge.map.reader.MapFile;
+import org.mapsforge.map.reader.header.MapFileException;
 
 import java.io.File;
+import java.io.FileFilter;
 
 /**
  * Accepts all valid map files.
  */
-public final class ValidMapFile implements ValidFileFilter {
-	private FileOpenResult fileOpenResult;
+public final class ValidMapFile implements FileFilter {
+    //private FileOpenResult fileOpenResult;
 
-	@Override
-	public boolean accept(File mapFile) {
-		MapDatabase mapDatabase = new MapDatabase();
+    @Override
+    public boolean accept(File mapFile) {
+        try {
+            MapDataStore mapDataStore = new MapFile(mapFile);
+            return true;
+        } catch (MapFileException e) {
+
+        }
+        return false;
+        /*MapDatabase mapDatabase = new MapDatabase();
 		this.fileOpenResult = mapDatabase.openFile(mapFile);
 		mapDatabase.closeFile();
-		return this.fileOpenResult.isSuccess();
-	}
+		return this.fileOpenResult.isSuccess();*/
+    }
 
-	@Override
-	public FileOpenResult getFileOpenResult() {
-		return this.fileOpenResult;
-	}
+    /*@Override
+    public FileOpenResult getFileOpenResult() {
+        return this.fileOpenResult;
+    }*/
 }

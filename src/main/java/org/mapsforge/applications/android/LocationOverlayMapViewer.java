@@ -15,15 +15,16 @@
  */
 package org.mapsforge.applications.android;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.util.Log;
 import android.view.View;
 import android.widget.ToggleButton;
 import org.mapsforge.applications.android.filepicker.FilePicker;
 import org.mapsforge.core.graphics.Bitmap;
 import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
-import org.mapsforge.map.android.layer.MyLocationOverlay;
 
 /**
  * MapViewer that shows current position. In the data directory of the Samples
@@ -31,47 +32,16 @@ import org.mapsforge.map.android.layer.MyLocationOverlay;
  * simulate location data in the center of Berlin.
  */
 public class LocationOverlayMapViewer extends RenderTheme4 {
-	private MyLocationOverlay myLocationOverlay;
-    private static final int SELECT_MAP_FILE = 0;
+    private MyLocationOverlay myLocationOverlay;
 
-	@Override
-	public void onPause() {
-        if (this.myLocationOverlay != null) myLocationOverlay.disableMyLocation();
-		super.onPause();
-	}
-
-	public void onResume() {
-		super.onResume();
-        if (this.myLocationOverlay != null) this.myLocationOverlay.enableMyLocation(true);
-	}
-
+    @SuppressWarnings("deprecation")
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        if (requestCode == SELECT_MAP_FILE) {
-            if (resultCode == RESULT_OK) {
-                if (this.myLocationOverlay != null) this.myLocationOverlay.setSnapToLocationEnabled(false);
-                if (intent != null && intent.getStringExtra(FilePicker.SELECTED_FILE) != null) {
-                    setMapFile(intent.getStringExtra(FilePicker.SELECTED_FILE));
-                    Log.i("L onActivityResult", "mapFileName:" + getMapFileName());    //todo
-                    preferencesFacade.putString(PREFERENCE_MAP_PATH, getMapFileName());
-                    preferencesFacade.save();
-
-                    super.onCreate(null);
-                    //redrawLayers();
-                } else Log.e("L onActivityResult", "intent:" + intent);
-            } else if (resultCode == RESULT_CANCELED) { //&& mapFileName == null) {
-                Log.e("L onActivityResult", "resultCode:" + resultCode);
-                finish();
-            } else Log.e("L onActivityResult", "resultCode:" + resultCode);
-        } else Log.e(TAG, "requestCode:" + requestCode);
-    }
-
-	@Override
-	protected void createLayers() {
-		super.createLayers();
+    protected void createLayers() {
+        super.createLayers();
 
         // a marker to show at the position
-        Drawable drawable = getResources().getDrawable(R.drawable.ic_maps_indicator_current_position_anim1);
+        Drawable drawable = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? getDrawable(R.drawable.ic_maps_indicator_current_position_anim1) : getResources().getDrawable(R.drawable.ic_maps_indicator_current_position_anim1);
         Bitmap my_position = AndroidGraphicFactory.convertToBitmap(drawable);
         // since we want to keep the bitmap around, we have to increment
         // its ref count, otherwise it gets recycled automatically when it is replaced with the other colour.
@@ -92,7 +62,49 @@ public class LocationOverlayMapViewer extends RenderTheme4 {
                 invertSnapToLocation();
             }
         });
-	}
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        myLocationOverlay.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (this.myLocationOverlay != null) this.myLocationOverlay.enableMyLocation(true);
+    }
+
+    @Override
+    protected void onStop() {
+        if (this.myLocationOverlay != null) myLocationOverlay.disableMyLocation();
+        super.onStop();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        //Log.i("L onActivityResult", "requestCode:" + requestCode + " resultCode:" + resultCode + " mapFileName:" + intent.getStringExtra(FilePicker.SELECTED_FILE));
+        if (requestCode == SELECT_MAP_FILE) {
+            if (resultCode == RESULT_OK) {
+                if (this.myLocationOverlay != null) this.myLocationOverlay.setSnapToLocationEnabled(false);
+                if (intent.getStringExtra(FilePicker.SELECTED_FILE) != null) {
+                    setMapFile(intent.getStringExtra(FilePicker.SELECTED_FILE));
+                    Log.i("L onActivityResult", "mapFileName:" + getMapFileName());
+
+                    try {
+                        super.onCreate(null);
+                    } catch (IllegalArgumentException e) { //invalid map file
+                        e.printStackTrace();
+                        startMapFilePicker();
+                    }
+                    //redrawLayers();
+                } else Log.e("L onActivityResult", "intent:" + intent);
+            } else if (resultCode == RESULT_CANCELED) { //&& mapFileName == null) {
+                Log.e("L onActivityResult", "resultCode:" + resultCode);
+                finish();
+            } else Log.e("L onActivityResult", "resultCode:" + resultCode);
+        } else Log.e(TAG, "requestCode:" + requestCode);
+    }
 
     protected void invertSnapToLocation() {
         if (this.myLocationOverlay != null) {

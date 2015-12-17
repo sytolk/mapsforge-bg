@@ -15,6 +15,7 @@
 
 package org.mapsforge.applications.android;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -35,15 +36,16 @@ import org.mapsforge.applications.android.filepicker.FilePicker;
 import org.mapsforge.core.model.LatLong;
 import org.mapsforge.core.model.MapPosition;
 import org.mapsforge.map.android.graphics.AndroidSvgBitmapStore;
+import org.mapsforge.map.android.input.MapZoomControls;
 import org.mapsforge.map.android.util.AndroidUtil;
 import org.mapsforge.map.android.util.MapViewerTemplate;
-import org.mapsforge.map.layer.renderer.MapWorker;
+import org.mapsforge.map.datastore.MapDataStore;
+import org.mapsforge.map.layer.cache.TileCache;
+import org.mapsforge.map.layer.renderer.MapWorkerPool;
 import org.mapsforge.map.layer.renderer.TileRendererLayer;
 import org.mapsforge.map.model.DisplayModel;
 import org.mapsforge.map.model.MapViewPosition;
-import org.mapsforge.map.reader.MapDatabase;
-import org.mapsforge.map.reader.header.FileOpenResult;
-import org.mapsforge.map.reader.header.MapFileInfo;
+import org.mapsforge.map.reader.MapFile;
 import org.mapsforge.map.scalebar.ImperialUnitAdapter;
 import org.mapsforge.map.scalebar.MetricUnitAdapter;
 import org.mapsforge.map.scalebar.NauticalUnitAdapter;
@@ -61,8 +63,11 @@ public abstract class BaseMapActivity extends MapViewerTemplate implements Share
     public static final String SETTING_TEXTWIDTH = "textwidth";
     public static final String SETTING_WAYFILTERING = "wayfiltering";
     public static final String SETTING_WAYFILTERING_DISTANCE = "wayfiltering_distance";
-    public static final String SETTING_TILECACHE_THREADING = "tilecache_threading";
-    public static final String SETTING_TILECACHE_QUEUESIZE = "tilecache_queuesize";
+    public static final String SETTING_TILECACHE_PERSISTENCE = "tilecache_persistence";
+    public static final String SETTING_RENDERING_THREADS = "rendering_threads";
+    public static final String SETTING_PREFERRED_LANGUAGE = "language_selection";
+    //public static final String SETTING_TILECACHE_THREADING = "tilecache_threading";
+    //public static final String SETTING_TILECACHE_QUEUESIZE = "tilecache_queuesize";
 
     public static final String SETTING_SCALEBAR = "scalebar";
     public static final String SETTING_SCALEBAR_METRIC = "metric";
@@ -77,7 +82,7 @@ public abstract class BaseMapActivity extends MapViewerTemplate implements Share
     private String mapFileName;
     protected static final String PREFERENCE_MAP_PATH = "PREFERENCE_MAP_PATH";
     private static final FileFilter FILE_FILTER_EXTENSION_MAP = new FilterByFileExtension(".map");
-    private static final int SELECT_MAP_FILE = 0;
+    protected static final int SELECT_MAP_FILE = 0;
     protected static final String TAG = "BaseMapActivity";
 
     @Override
@@ -93,16 +98,18 @@ public abstract class BaseMapActivity extends MapViewerTemplate implements Share
     @Override
     protected MapPosition getDefaultInitialPosition() {
 
-        File mapFile = getMapFile();
+        MapDataStore mapFile = getMapFile();
         if (mapFile != null) {
-            MapDatabase mapDatabase = new MapDatabase();
-            final FileOpenResult result = mapDatabase.openFile(mapFile);
+
+            return new MapPosition(mapFile.startPosition(), mapFile.startZoomLevel());
+            //MapDatabase mapDatabase = new MapDatabase(); //new MapFile
+            /*final FileOpenResult result = mapDatabase.openFile(mapFile);
             if (result.isSuccess()) {
                 final MapFileInfo mapFileInfo = mapDatabase.getMapFileInfo();
                 if (mapFileInfo != null && mapFileInfo.startPosition != null) {
                     return new MapPosition(mapFileInfo.startPosition, mapFileInfo.startZoomLevel);
                 }
-            }
+            }*/
         }
 
         return new MapPosition(new LatLong(42.5, 27.468), (byte) 17);
@@ -118,20 +125,40 @@ public abstract class BaseMapActivity extends MapViewerTemplate implements Share
         setMaxTextWidthFactor();
     }
 
+	@Override
+	protected void createControls()	{
+		super.createControls();
+		setMapScaleBar();
+	}
+
     @Override
-    protected void createControls() {
-        setMapScaleBar();
+    protected void createMapViews() {
+        super.createMapViews();
+
+        mapView.getMapZoomControls().setZoomControlsOrientation(MapZoomControls.Orientation.VERTICAL_IN_OUT);
+        mapView.getMapZoomControls().setZoomInResource(R.drawable.zoom_control_in);
+        mapView.getMapZoomControls().setZoomOutResource(R.drawable.zoom_control_out);
+        mapView.getMapZoomControls().setMarginHorizontal(getResources().getDimensionPixelOffset(R.dimen.controls_margin));
+        mapView.getMapZoomControls().setMarginVertical(getResources().getDimensionPixelOffset(R.dimen.controls_margin));
     }
 
     protected void createTileCaches() {
-        boolean threaded = sharedPreferences.getBoolean(SETTING_TILECACHE_THREADING, true);
+
+        boolean persistent = sharedPreferences.getBoolean(SETTING_TILECACHE_PERSISTENCE, true);
+
+        this.tileCaches.add(AndroidUtil.createTileCache(this, getPersistableId(),
+                this.mapView.getModel().displayModel.getTileSize(), this.getScreenRatio(),
+                this.mapView.getModel().frameBufferModel.getOverdrawFactor(), persistent
+        ));
+
+        /*boolean threaded = sharedPreferences.getBoolean(SETTING_TILECACHE_THREADING, true);
         int queueSize = Integer.parseInt(sharedPreferences.getString(SETTING_TILECACHE_QUEUESIZE, "4"));
 
         this.tileCaches.add(AndroidUtil.createTileCache(this, getPersistableId(),
                 this.mapView.getModel().displayModel.getTileSize(), this.getScreenRatio(),
                 this.mapView.getModel().frameBufferModel.getOverdrawFactor(),
                 threaded, queueSize
-        ));
+        ));*/
     }
 
     /**
@@ -141,10 +168,11 @@ public abstract class BaseMapActivity extends MapViewerTemplate implements Share
         return this.mapFileName; //"germany.map";
     }
 
-    protected void onDestroy() {
-        super.onDestroy();
-        this.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
-    }
+	@Override
+	protected void onDestroy() {
+		this.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
+		super.onDestroy();
+	}
 
 	/*
      * Settings related methods.
@@ -165,7 +193,7 @@ public abstract class BaseMapActivity extends MapViewerTemplate implements Share
         this.sharedPreferences.registerOnSharedPreferenceChangeListener(this);
     }
 
-    @Deprecated
+    @SuppressLint("InflateParams")
     @Override
     protected Dialog onCreateDialog(int id) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -202,6 +230,7 @@ public abstract class BaseMapActivity extends MapViewerTemplate implements Share
         return true;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent;
@@ -221,7 +250,7 @@ public abstract class BaseMapActivity extends MapViewerTemplate implements Share
         return false;
     }
 
-    @Deprecated
+    @SuppressWarnings("deprecation")
     @Override
     protected void onPrepareDialog(int id, final Dialog dialog) {
         if (id == this.DIALOG_ENTER_COORDINATES) {
@@ -258,33 +287,48 @@ public abstract class BaseMapActivity extends MapViewerTemplate implements Share
         }
     }
 
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences preferences, String key) {
-        if (SETTING_SCALE.equals(key)) {
-            this.mapView.getModel().displayModel.setUserScaleFactor(DisplayModel.getDefaultUserScaleFactor());
-            Log.d("BaseMapActivity", "Tilesize now " + this.mapView.getModel().displayModel.getTileSize());
-            AndroidUtil.restartActivity(this);
-        }
-        if (SETTING_TEXTWIDTH.equals(key)) {
-            AndroidUtil.restartActivity(this);
-        }
-        if (SETTING_TILECACHE_QUEUESIZE.equals(key) || SETTING_TILECACHE_THREADING.equals(key)) {
-            AndroidUtil.restartActivity(this);
-        }
-        if (SETTING_SCALEBAR.equals(key)) {
-            setMapScaleBar();
-        }
-        if (SETTING_DEBUG_TIMING.equals(key)) {
-            MapWorker.DEBUG_TIMING = preferences.getBoolean(SETTING_DEBUG_TIMING, false);
-        }
-        if (SETTING_WAYFILTERING_DISTANCE.equals(key) ||
-                SETTING_WAYFILTERING.equals(key)) {
-            MapDatabase.wayFilterEnabled = preferences.getBoolean(SETTING_WAYFILTERING, true);
-            if (MapDatabase.wayFilterEnabled) {
-                MapDatabase.wayFilterDistance = Integer.parseInt(preferences.getString(SETTING_WAYFILTERING_DISTANCE, "20"));
-            }
-        }
-    }
+	@Override
+	public void onSharedPreferenceChanged(SharedPreferences preferences, String key) {
+		if (SETTING_SCALE.equals(key)) {
+			this.mapView.getModel().displayModel.setUserScaleFactor(DisplayModel.getDefaultUserScaleFactor());
+			Log.d(TAG, "Tilesize now " + this.mapView.getModel().displayModel.getTileSize());
+			AndroidUtil.restartActivity(this);
+		}
+		if (SETTING_PREFERRED_LANGUAGE.equals(key)) {
+			String language = preferences.getString(SETTING_PREFERRED_LANGUAGE, null);
+			Log.d(TAG, "Preferred language now " + language);
+			AndroidUtil.restartActivity(this);
+		}
+		if (SETTING_TILECACHE_PERSISTENCE.equals(key)) {
+			if (!preferences.getBoolean(SETTING_TILECACHE_PERSISTENCE, false)) {
+				Log.d(TAG, "Purging tile caches");
+				for (TileCache tileCache : this.tileCaches) {
+					tileCache.purge();
+				}
+			}
+			AndroidUtil.restartActivity(this);
+		}
+		if (SETTING_TEXTWIDTH.equals(key)) {
+			AndroidUtil.restartActivity(this);
+		}
+		if (SETTING_SCALEBAR.equals(key)) {
+			setMapScaleBar();
+		}
+		if (SETTING_DEBUG_TIMING.equals(key)) {
+			MapWorkerPool.DEBUG_TIMING = preferences.getBoolean(SETTING_DEBUG_TIMING, false);
+		}
+		if (SETTING_RENDERING_THREADS.equals(key)) {
+			MapWorkerPool.NUMBER_OF_THREADS = Integer.parseInt(preferences.getString(SETTING_RENDERING_THREADS, Integer.toString(MapWorkerPool.DEFAULT_NUMBER_OF_THREADS)));
+			AndroidUtil.restartActivity(this);
+		}
+		if (SETTING_WAYFILTERING_DISTANCE.equals(key) ||
+				SETTING_WAYFILTERING.equals(key)) {
+			MapFile.wayFilterEnabled = preferences.getBoolean(SETTING_WAYFILTERING, true);
+			if (MapFile.wayFilterEnabled) {
+				MapFile.wayFilterDistance = Integer.parseInt(preferences.getString(SETTING_WAYFILTERING_DISTANCE, "20"));
+			}
+		}
+	}
 
     /**
      * Sets the scale bar from preferences.
@@ -316,25 +360,34 @@ public abstract class BaseMapActivity extends MapViewerTemplate implements Share
 
     /**
      * STANIMIR
+     *
      * @param mapFile
      */
     protected void setMapFile(String mapFile) {
-        if (this.mapFileName == null && mapFile != null) {
-            this.mapFileName = mapFile;
-            //Log.i("setMapFile", "setMapFile map file to:" + mapFile);
-        }
+        if (mapFile != null) { //this.mapFileName == null
+            File file = new File(mapFile);
+            if (file.exists()) {
+                this.mapFileName = mapFile;
+                if (preferencesFacade != null) {
+                    preferencesFacade.putString(PREFERENCE_MAP_PATH, getMapFileName());
+                    preferencesFacade.save();
+                }
+                Log.i("setMapFile", "setMapFile map file to:" + mapFile);
+            } else Log.e("setMapFile", "Map file not exist:" + mapFile);
+        } else Log.e("setMapFile", "Map file=null");
     }
 
     /**
      * @return a map file
      */
-    protected File getMapFile() {
-        if (mapFileName == null) mapFileName = preferencesFacade.getString(PREFERENCE_MAP_PATH, null);
+    protected MapDataStore getMapFile() {
+        if (mapFileName == null && preferencesFacade != null)
+            mapFileName = preferencesFacade.getString(PREFERENCE_MAP_PATH, null);
         if (mapFileName != null) {
             File file = new File(mapFileName); //Environment.getExternalStorageDirectory(), mapFileName);
-            Log.i("TAG", "Map file is " + file.getAbsolutePath());
+            //Log.i("TAG", "Map file is " + file.getAbsolutePath());
             if (file.exists()) {
-                return file;
+                return new MapFile(file);
             } else {
                 Log.e("TAG", "Map file not exist " + file.getAbsolutePath());
                 startMapFilePicker();
