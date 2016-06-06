@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.taxi-bulgaria.map</groupId>
-	<artifactId>mapsforge</artifactId>
-	<version>0.6.0</version>
-	<packaging>aar</packaging>
-	<name>mapsforge-bg</name>
-	<url>http://taxi-bulgaria.com</url>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.taxi-bulgaria.map</groupId>
+    <artifactId>mapsforge</artifactId>
+    <version>0.6.0</version>
+    <packaging>aar</packaging>
+    <name>mapsforge-bg</name>
+    <url>http://taxi-bulgaria.com</url>
     <inceptionYear>2014</inceptionYear>
 
     <developers>
@@ -36,12 +36,12 @@
         <url>http://taxi-bulgaria.com</url>
     </organization>
 
-	<properties>
+    <properties>
         <android-platform>17</android-platform>
         <android-emulator>8</android-emulator>
-		<!--<targetJdk>1.6</targetJdk>-->
+        <!--<targetJdk>1.6</targetJdk>-->
         <java.version>1.7</java.version>
-	</properties>
+    </properties>
 
     <parent>
         <groupId>org.sonatype.oss</groupId>
@@ -49,13 +49,13 @@
         <version>7</version>
     </parent>
 
-	<build>
+    <build>
         <finalName>${project.artifactId}</finalName>
-		<plugins>
+        <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.2</version>
+                <version>3.3</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
@@ -64,7 +64,7 @@
             <plugin>
                 <groupId>com.simpligility.maven.plugins</groupId>
                 <artifactId>android-maven-plugin</artifactId>
-                <version>4.3.0</version>
+                <version>4.4.1</version>
                 <extensions>true</extensions>
                 <configuration>
                     <androidManifestFile>${project.basedir}/AndroidManifest.xml</androidManifestFile>
@@ -109,54 +109,74 @@
                 <artifactId>maven-release-plugin</artifactId>
                 <version>2.4.1</version>
             </plugin>
-		</plugins>
-	</build>
+        </plugins>
+    </build>
 
-	<dependencies>
+    <dependencies>
         <dependency>
             <groupId>android</groupId>
             <artifactId>android</artifactId>
-            <version>6.0_r2</version>
+            <version>6.0_r3</version>
             <scope>provided</scope>
         </dependency>
 
         <!--<dependency>
             <groupId>android.support</groupId>
             <artifactId>compatibility-v4</artifactId>
-            <version>23.1.1</version>
+            <version>23.2.1</version>
         </dependency>-->
 
-		<dependency>
-			<groupId>org.mapsforge</groupId>
-			<artifactId>mapsforge-map-android</artifactId>
-			<!--<version>0.5.2</version>-->
-			<!--<version>0.6.0</version>-->
-			<version>master-SNAPSHOT</version>
-		</dependency>
+        <dependency>
+            <groupId>com.android.support</groupId>
+            <artifactId>support-v4</artifactId>
+            <version>23.4.0</version>
+            <type>aar</type>
+            <scope>provided</scope>
+        </dependency>
+
+        <!--<dependency>
+            <groupId>org.mapsforge</groupId>
+            <artifactId>mapsforge-map-android</artifactId>
+            &lt;!&ndash;<version>0.5.2</version>&ndash;&gt;
+            &lt;!&ndash;<version>0.6.0</version>&ndash;&gt;
+            &lt;!&ndash;<version>master-SNAPSHOT</version>&ndash;&gt;
+            <version>0.6.1-rc2</version>
+        </dependency>-->
 
         <dependency>
             <groupId>org.mapsforge</groupId>
             <artifactId>mapsforge-map-android-extras</artifactId>
-            <version>master-SNAPSHOT</version>
+            <version>0.6.1-rc2</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>android.support</groupId>
+                    <artifactId>compatibility-v4</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
-		<!--<dependency>
-			<groupId>com.google.android</groupId>
-			<artifactId>support-v4</artifactId>
-			<version>r7</version>
-		</dependency>-->
+        <!--<dependency>
+            <groupId>com.google.android</groupId>
+            <artifactId>support-v4</artifactId>
+            <version>r7</version>
+        </dependency>-->
         <!--<dependency>
             <groupId>com.android.support</groupId>
             <artifactId>support-v4</artifactId>
             <version>22.1.1</version>
         </dependency>-->
-	</dependencies>
+    </dependencies>
 
     <repositories>
         <repository>
             <id>snapshots-repository</id>
             <name>Sonatype oss snapshot repo</name>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </repository>
+
+        <repository>
+            <id>android-local</id>
+            <url>file:/home/stanimir/android-sdk-linux/extras/android/m2repository</url>
         </repository>
     </repositories>
 </project>

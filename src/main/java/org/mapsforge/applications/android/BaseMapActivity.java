@@ -117,19 +117,22 @@ public abstract class BaseMapActivity extends MapViewerTemplate implements Share
 
     @Override
     protected void createLayers() {
-        TileRendererLayer tileRendererLayer = AndroidUtil.createTileRendererLayer(this.tileCaches.get(0),
-                mapView.getModel().mapViewPosition, getMapFile(), getRenderTheme(), false, true);
-        this.mapView.getLayerManager().getLayers().add(tileRendererLayer);
+        MapDataStore mapFile = getMapFile();
+        if (mapFile != null) {
+            TileRendererLayer tileRendererLayer = AndroidUtil.createTileRendererLayer(this.tileCaches.get(0),
+                    mapView.getModel().mapViewPosition, mapFile, getRenderTheme(), false, true, false);
+            this.mapView.getLayerManager().getLayers().add(tileRendererLayer);
 
-        // needed only for samples to hook into Settings.
-        setMaxTextWidthFactor();
+            // needed only for samples to hook into Settings.
+            setMaxTextWidthFactor();
+        }
     }
 
-	@Override
-	protected void createControls()	{
-		super.createControls();
-		setMapScaleBar();
-	}
+    @Override
+    protected void createControls() {
+        super.createControls();
+        setMapScaleBar();
+    }
 
     @Override
     protected void createMapViews() {
@@ -168,11 +171,11 @@ public abstract class BaseMapActivity extends MapViewerTemplate implements Share
         return this.mapFileName; //"germany.map";
     }
 
-	@Override
-	protected void onDestroy() {
-		this.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
-		super.onDestroy();
-	}
+    @Override
+    protected void onDestroy() {
+        this.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
+        super.onDestroy();
+    }
 
 	/*
      * Settings related methods.
@@ -193,6 +196,7 @@ public abstract class BaseMapActivity extends MapViewerTemplate implements Share
         this.sharedPreferences.registerOnSharedPreferenceChangeListener(this);
     }
 
+    @SuppressWarnings("deprecation")
     @SuppressLint("InflateParams")
     @Override
     protected Dialog onCreateDialog(int id) {
@@ -287,48 +291,48 @@ public abstract class BaseMapActivity extends MapViewerTemplate implements Share
         }
     }
 
-	@Override
-	public void onSharedPreferenceChanged(SharedPreferences preferences, String key) {
-		if (SETTING_SCALE.equals(key)) {
-			this.mapView.getModel().displayModel.setUserScaleFactor(DisplayModel.getDefaultUserScaleFactor());
-			Log.d(TAG, "Tilesize now " + this.mapView.getModel().displayModel.getTileSize());
-			AndroidUtil.restartActivity(this);
-		}
-		if (SETTING_PREFERRED_LANGUAGE.equals(key)) {
-			String language = preferences.getString(SETTING_PREFERRED_LANGUAGE, null);
-			Log.d(TAG, "Preferred language now " + language);
-			AndroidUtil.restartActivity(this);
-		}
-		if (SETTING_TILECACHE_PERSISTENCE.equals(key)) {
-			if (!preferences.getBoolean(SETTING_TILECACHE_PERSISTENCE, false)) {
-				Log.d(TAG, "Purging tile caches");
-				for (TileCache tileCache : this.tileCaches) {
-					tileCache.purge();
-				}
-			}
-			AndroidUtil.restartActivity(this);
-		}
-		if (SETTING_TEXTWIDTH.equals(key)) {
-			AndroidUtil.restartActivity(this);
-		}
-		if (SETTING_SCALEBAR.equals(key)) {
-			setMapScaleBar();
-		}
-		if (SETTING_DEBUG_TIMING.equals(key)) {
-			MapWorkerPool.DEBUG_TIMING = preferences.getBoolean(SETTING_DEBUG_TIMING, false);
-		}
-		if (SETTING_RENDERING_THREADS.equals(key)) {
-			MapWorkerPool.NUMBER_OF_THREADS = Integer.parseInt(preferences.getString(SETTING_RENDERING_THREADS, Integer.toString(MapWorkerPool.DEFAULT_NUMBER_OF_THREADS)));
-			AndroidUtil.restartActivity(this);
-		}
-		if (SETTING_WAYFILTERING_DISTANCE.equals(key) ||
-				SETTING_WAYFILTERING.equals(key)) {
-			MapFile.wayFilterEnabled = preferences.getBoolean(SETTING_WAYFILTERING, true);
-			if (MapFile.wayFilterEnabled) {
-				MapFile.wayFilterDistance = Integer.parseInt(preferences.getString(SETTING_WAYFILTERING_DISTANCE, "20"));
-			}
-		}
-	}
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences preferences, String key) {
+        if (SETTING_SCALE.equals(key)) {
+            this.mapView.getModel().displayModel.setUserScaleFactor(DisplayModel.getDefaultUserScaleFactor());
+            Log.d(TAG, "Tilesize now " + this.mapView.getModel().displayModel.getTileSize());
+            AndroidUtil.restartActivity(this);
+        }
+        if (SETTING_PREFERRED_LANGUAGE.equals(key)) {
+            String language = preferences.getString(SETTING_PREFERRED_LANGUAGE, null);
+            Log.d(TAG, "Preferred language now " + language);
+            AndroidUtil.restartActivity(this);
+        }
+        if (SETTING_TILECACHE_PERSISTENCE.equals(key)) {
+            if (!preferences.getBoolean(SETTING_TILECACHE_PERSISTENCE, false)) {
+                Log.d(TAG, "Purging tile caches");
+                for (TileCache tileCache : this.tileCaches) {
+                    tileCache.purge();
+                }
+            }
+            AndroidUtil.restartActivity(this);
+        }
+        if (SETTING_TEXTWIDTH.equals(key)) {
+            AndroidUtil.restartActivity(this);
+        }
+        if (SETTING_SCALEBAR.equals(key)) {
+            setMapScaleBar();
+        }
+        if (SETTING_DEBUG_TIMING.equals(key)) {
+            MapWorkerPool.DEBUG_TIMING = preferences.getBoolean(SETTING_DEBUG_TIMING, false);
+        }
+        if (SETTING_RENDERING_THREADS.equals(key)) {
+            MapWorkerPool.NUMBER_OF_THREADS = Integer.parseInt(preferences.getString(SETTING_RENDERING_THREADS, Integer.toString(MapWorkerPool.DEFAULT_NUMBER_OF_THREADS)));
+            AndroidUtil.restartActivity(this);
+        }
+        if (SETTING_WAYFILTERING_DISTANCE.equals(key) ||
+                SETTING_WAYFILTERING.equals(key)) {
+            MapFile.wayFilterEnabled = preferences.getBoolean(SETTING_WAYFILTERING, true);
+            if (MapFile.wayFilterEnabled) {
+                MapFile.wayFilterDistance = Integer.parseInt(preferences.getString(SETTING_WAYFILTERING_DISTANCE, "20"));
+            }
+        }
+    }
 
     /**
      * Sets the scale bar from preferences.
