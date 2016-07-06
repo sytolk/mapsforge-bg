@@ -21,6 +21,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -56,9 +57,10 @@ import java.io.FileFilter;
 /**
  * Code common to most activities in the Samples app.
  */
-public abstract class BaseMapActivity extends MapViewerTemplate implements SharedPreferences.OnSharedPreferenceChangeListener {
+public abstract class BaseMapActivity extends MapViewerTemplate implements SharedPreferences.OnSharedPreferenceChangeListener { //MapViewerTemplateRuntimePermissions
 
     public static final String SETTING_DEBUG_TIMING = "debug_timing";
+    public static final String SETTING_HARDWARE_ACCELERATION = "hardware_acceleration";
     public static final String SETTING_SCALE = "scale";
     public static final String SETTING_TEXTWIDTH = "textwidth";
     public static final String SETTING_WAYFILTERING = "wayfiltering";
@@ -130,13 +132,22 @@ public abstract class BaseMapActivity extends MapViewerTemplate implements Share
 
     @Override
     protected void createControls() {
-        super.createControls();
-        setMapScaleBar();
+        if (getMapFile() != null) {
+            super.createControls();
+            setMapScaleBar();
+        }
     }
 
     @Override
     protected void createMapViews() {
         super.createMapViews();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            boolean hardwareAcceleration = sharedPreferences.getBoolean(SETTING_HARDWARE_ACCELERATION, true);
+            if (!hardwareAcceleration) {
+                mapView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+            }
+        }
 
         mapView.getMapZoomControls().setZoomControlsOrientation(MapZoomControls.Orientation.VERTICAL_IN_OUT);
         mapView.getMapZoomControls().setZoomInResource(R.drawable.zoom_control_in);

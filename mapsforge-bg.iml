@@ -36,13 +36,13 @@
     <orderEntry type="jdk" jdkName="Maven Android API 23 Platform (1)" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: android:android:6.0_r3" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: com.android.support:support-v4:aar:23.4.0" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: com.android.support:support-annotations:23.4.0" level="project" />
-    <orderEntry type="library" name="Maven: org.mapsforge:mapsforge-map-android-extras:0.6.1-rc2" level="project" />
-    <orderEntry type="library" name="Maven: org.mapsforge:mapsforge-map-android:0.6.1-rc2" level="project" />
-    <orderEntry type="library" name="Maven: org.mapsforge:mapsforge-map-reader:0.6.1-rc2" level="project" />
-    <orderEntry type="library" name="Maven: org.mapsforge:mapsforge-map:0.6.1-rc2" level="project" />
-    <orderEntry type="library" name="Maven: org.mapsforge:mapsforge-core:0.6.1-rc2" level="project" />
+    <orderEntry type="library" name="Maven: com.android.support:support-v4:aar:23.2.1" level="project" />
+    <orderEntry type="library" name="Maven: com.android.support:support-annotations:23.2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.mapsforge:mapsforge-map-android-extras:0.6.1" level="project" />
+    <orderEntry type="library" name="Maven: org.mapsforge:mapsforge-map-android:0.6.1" level="project" />
+    <orderEntry type="library" name="Maven: org.mapsforge:mapsforge-map-reader:0.6.1" level="project" />
+    <orderEntry type="library" name="Maven: org.mapsforge:mapsforge-map:0.6.1" level="project" />
+    <orderEntry type="library" name="Maven: org.mapsforge:mapsforge-core:0.6.1" level="project" />
     <orderEntry type="library" name="Maven: net.sf.kxml:kxml2:2.3.0" level="project" />
     <orderEntry type="library" name="Maven: com.caverock:androidsvg:1.2.2-beta-1" level="project" />
   </component>

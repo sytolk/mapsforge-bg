@@ -51,7 +51,7 @@ import java.util.Comparator;
  * Another <code>FileFilter</code> can be applied via {@link #} to check if a
  * selected file is valid before its path is returned. By default all files are considered as valid and can be selected.
  */
-public class FilePicker extends Activity implements AdapterView.OnItemClickListener {   //SharedPreferences.OnSharedPreferenceChangeListener,
+public class FilePicker extends Activity implements AdapterView.OnItemClickListener {//, ActivityCompat.OnRequestPermissionsResultCallback {   //SharedPreferences.OnSharedPreferenceChangeListener,
     /**
      * The name of the extra data in the result {@link android.content.Intent}.
      */
@@ -65,6 +65,7 @@ public class FilePicker extends Activity implements AdapterView.OnItemClickListe
     private static FileFilter fileDisplayFilter;
     private static FileFilter fileSelectFilter;
     public static final String PREFERENCES_FILE = "FilePicker";
+    //public static final byte PERMISSIONS_REQUEST_WRITE_STORAGE = 124;
 
     /**
      * Sets the file comparator which is used to order the contents of all directories before displaying them. If set to
@@ -192,6 +193,21 @@ public class FilePicker extends Activity implements AdapterView.OnItemClickListe
     }
 
     /*@Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+
+        Log.e("onRequestPermResult", "requestCode:" + requestCode);
+
+        if (PERMISSIONS_REQUEST_WRITE_STORAGE == requestCode) {
+            if (grantResults.length == 0 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                selectFileDialog();
+                return;
+            }
+            downloadMap();
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }*/
+
+    /*@Override
     public void onBackPressed() {
         super.onBackPressed();
     }*/
@@ -231,7 +247,7 @@ public class FilePicker extends Activity implements AdapterView.OnItemClickListe
 		}
 	}*/
 
-    void selectFileDialog() {
+    private void selectFileDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setTitle(R.string.file_select_title);
         alertDialogBuilder.setMessage(R.string.file_select);
@@ -248,40 +264,11 @@ public class FilePicker extends Activity implements AdapterView.OnItemClickListe
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                final ProgressDialog pDialog = getProgressDialog();
-                pDialog.show();
+                /*if (AndroidSupportUtil.runtimePermissionRequired(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    ActivityCompat.requestPermissions(FilePicker.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_WRITE_STORAGE);
+                } else downloadMap();*/
 
-                AsyncTask<Context, Integer, File> mapTask = new DownloadMapTask(new DownloadMapTask.OnTaskCompleted() {
-
-                    @Override
-                    public void onTaskCompleted(File path) {
-                        try {
-                            if (!FilePicker.this.isFinishing())
-                                pDialog.dismiss();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        setResult(RESULT_OK, new Intent().putExtra(SELECTED_FILE, path.getAbsolutePath()));
-                        finish();
-                    }
-
-                    @Override
-                    public void progressUpdated(int progress) {
-                        try {
-                            if (!FilePicker.this.isFinishing()) {
-                                if (!pDialog.isShowing()) pDialog.show();
-                                pDialog.setProgress(progress);
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-                    mapTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                else mapTask.execute();
-
+                downloadMap();
                 dialog.dismiss();
             }
         });
@@ -297,6 +284,46 @@ public class FilePicker extends Activity implements AdapterView.OnItemClickListe
                 if (e.getMessage() != null) Log.e("selectFileDialog", e.getMessage());
             }
         }*/
+    }
+
+    private void downloadMap() {
+
+        Log.i("downloadMap", "downloadMap");
+        final ProgressDialog pDialog = getProgressDialog();
+        pDialog.show();
+
+        AsyncTask<Context, Integer, File> mapTask = new DownloadMapTask(new DownloadMapTask.OnTaskCompleted() {
+
+            @Override
+            public void onTaskCompleted(File path) {
+                if (path != null) {
+                    try {
+                        if (!FilePicker.this.isFinishing())
+                            pDialog.dismiss();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    setResult(RESULT_OK, new Intent().putExtra(SELECTED_FILE, path.getAbsolutePath()));
+                }
+                finish();
+            }
+
+            @Override
+            public void progressUpdated(int progress) {
+                try {
+                    if (!FilePicker.this.isFinishing()) {
+                        if (!pDialog.isShowing()) pDialog.show();
+                        pDialog.setProgress(progress);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+            mapTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, getApplicationContext());
+        else mapTask.execute(getApplicationContext());
     }
 
     void selectFileInvalidDialog() {

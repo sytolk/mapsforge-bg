@@ -83,7 +83,7 @@ public class LocationOverlayMapViewer extends RenderTheme4 {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        //Log.i("L onActivityResult", "requestCode:" + requestCode + " resultCode:" + resultCode + " mapFileName:" + intent.getStringExtra(FilePicker.SELECTED_FILE));
+        Log.i("L onActivityResult", "requestCode:" + requestCode + " resultCode:" + resultCode + " mapFileName:" + intent.getStringExtra(FilePicker.SELECTED_FILE));
         if (requestCode == SELECT_MAP_FILE) {
             if (resultCode == RESULT_OK) {
                 if (this.myLocationOverlay != null) this.myLocationOverlay.setSnapToLocationEnabled(false);
@@ -91,11 +91,13 @@ public class LocationOverlayMapViewer extends RenderTheme4 {
                     setMapFile(intent.getStringExtra(FilePicker.SELECTED_FILE));
                     Log.i("L onActivityResult", "mapFileName:" + getMapFileName());
 
-                    try {
-                        super.onCreate(null);
-                    } catch (IllegalArgumentException e) { //invalid map file
-                        e.printStackTrace();
-                        startMapFilePicker();
+                    if (getMapFile() != null) {
+                        try {
+                            super.onCreate(null);
+                        } catch (IllegalArgumentException e) { //invalid map file
+                            e.printStackTrace();
+                            startMapFilePicker();
+                        }
                     }
                     //redrawLayers();
                 } else Log.e("L onActivityResult", "intent:" + intent);

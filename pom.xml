@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.taxi-bulgaria.map</groupId>
     <artifactId>mapsforge</artifactId>
-    <version>0.6.0</version>
+    <version>0.6.1</version>
     <packaging>aar</packaging>
     <name>mapsforge-bg</name>
     <url>http://taxi-bulgaria.com</url>
@@ -129,9 +129,10 @@
         <dependency>
             <groupId>com.android.support</groupId>
             <artifactId>support-v4</artifactId>
-            <version>23.4.0</version>
+            <version>23.2.1</version>
+            <!--<version>24.0.0</version>-->
             <type>aar</type>
-            <scope>provided</scope>
+            <!--<scope>provided</scope>-->
         </dependency>
 
         <!--<dependency>
@@ -146,7 +147,7 @@
         <dependency>
             <groupId>org.mapsforge</groupId>
             <artifactId>mapsforge-map-android-extras</artifactId>
-            <version>0.6.1-rc2</version>
+            <version>0.6.1</version>
             <exclusions>
                 <exclusion>
                     <groupId>android.support</groupId>

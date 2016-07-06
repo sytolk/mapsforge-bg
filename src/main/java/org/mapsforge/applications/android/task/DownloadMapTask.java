@@ -23,6 +23,7 @@ public class DownloadMapTask extends AsyncTask<Context, Integer, File> {
     private static final String TAG = "DownloadUpdateTask";
     private OnTaskCompleted listener;
     private String mapFile = "bulgaria.map";
+    private Context context;
 
     public DownloadMapTask(OnTaskCompleted listener) {
         this.listener = listener;
@@ -35,6 +36,8 @@ public class DownloadMapTask extends AsyncTask<Context, Integer, File> {
 
     @Override
     protected File doInBackground(Context... params) {
+
+        if (params.length == 1) context = params[0];
 
         try {
             URL url = new URL("http://taxi-bulgaria.com/" + mapFile);
@@ -58,9 +61,11 @@ public class DownloadMapTask extends AsyncTask<Context, Integer, File> {
             int lenghtOfFile = c.getContentLength();
 
             //String PATH = "/mnt/sdcard/Download/";
-            File file = new File(Environment.getExternalStorageDirectory(), "Download/");
-            file.mkdirs();
+            File file = context.getFilesDir();// Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS); //new File(Environment.getExternalStorageDirectory(), "Download/");
+            //file.mkdirs();
+            //if (file.isDirectory()) {
             File outputFile = new File(file, mapFile);
+            //File outputFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), mapFile);
             if (outputFile.exists()) {
                 outputFile.delete();
             }
@@ -86,7 +91,8 @@ public class DownloadMapTask extends AsyncTask<Context, Integer, File> {
             if (e.getMessage() != null) Log.e(TAG, "error! " + e.getMessage());
         }
 
-        return new File(Environment.getExternalStorageDirectory(), "Download/" + mapFile);
+        //return new File(Environment.getExternalStorageDirectory(), "Download/" + mapFile);
+        return new File(context.getFilesDir(), mapFile);
     }
 
     /**
