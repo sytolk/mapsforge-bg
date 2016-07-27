@@ -33,6 +33,8 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import org.mapsforge.applications.android.R;
 import org.mapsforge.applications.android.task.DownloadMapTask;
+import org.mapsforge.map.reader.MapFile;
+import org.mapsforge.map.reader.header.MapFileException;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -288,7 +290,7 @@ public class FilePicker extends Activity implements AdapterView.OnItemClickListe
 
     private void downloadMap() {
 
-        Log.i("downloadMap", "downloadMap");
+        //Log.i("downloadMap", "downloadMap");
         final ProgressDialog pDialog = getProgressDialog();
         pDialog.show();
 
@@ -303,7 +305,14 @@ public class FilePicker extends Activity implements AdapterView.OnItemClickListe
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    setResult(RESULT_OK, new Intent().putExtra(SELECTED_FILE, path.getAbsolutePath()));
+                    try {
+                        new MapFile(path); //check if map file is valid
+                        setResult(RESULT_OK, new Intent().putExtra(SELECTED_FILE, path.getAbsolutePath()));
+
+                    } catch (MapFileException e) {
+                        Log.e("downloadMap", "MapFileException:", e);
+                        if(!isFinishing()) selectFileInvalidDialog();
+                    }
                 }
                 finish();
             }

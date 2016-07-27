@@ -47,6 +47,7 @@ import org.mapsforge.map.layer.renderer.TileRendererLayer;
 import org.mapsforge.map.model.DisplayModel;
 import org.mapsforge.map.model.MapViewPosition;
 import org.mapsforge.map.reader.MapFile;
+import org.mapsforge.map.reader.header.MapFileException;
 import org.mapsforge.map.scalebar.ImperialUnitAdapter;
 import org.mapsforge.map.scalebar.MetricUnitAdapter;
 import org.mapsforge.map.scalebar.NauticalUnitAdapter;
@@ -402,7 +403,13 @@ public abstract class BaseMapActivity extends MapViewerTemplate implements Share
             File file = new File(mapFileName); //Environment.getExternalStorageDirectory(), mapFileName);
             //Log.i("TAG", "Map file is " + file.getAbsolutePath());
             if (file.exists()) {
-                return new MapFile(file);
+                try {
+                    return new MapFile(file);
+                } catch (MapFileException e) {
+                    //file.delete();
+                    Log.e("TAG", "MapFileException", e);
+                    startMapFilePicker();
+                }
             } else {
                 Log.e("TAG", "Map file not exist " + file.getAbsolutePath());
                 startMapFilePicker();
@@ -417,7 +424,7 @@ public abstract class BaseMapActivity extends MapViewerTemplate implements Share
     /**
      * Sets all file filters and starts the FilePicker to select a map file.
      */
-    protected synchronized void startMapFilePicker() {
+    protected void startMapFilePicker() {
         FilePicker.setFileDisplayFilter(FILE_FILTER_EXTENSION_MAP);
         FilePicker.setFileSelectFilter(new ValidMapFile());
         Intent fileIntent = new Intent(this, FilePicker.class);

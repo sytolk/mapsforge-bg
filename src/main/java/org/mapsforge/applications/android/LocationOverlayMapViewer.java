@@ -83,11 +83,11 @@ public class LocationOverlayMapViewer extends RenderTheme4 {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        Log.i("L onActivityResult", "requestCode:" + requestCode + " resultCode:" + resultCode + " mapFileName:" + intent.getStringExtra(FilePicker.SELECTED_FILE));
+        //Log.i("L onActivityResult", "requestCode:" + requestCode + " resultCode:" + resultCode + " mapFileName:" + intent.getStringExtra(FilePicker.SELECTED_FILE));
         if (requestCode == SELECT_MAP_FILE) {
             if (resultCode == RESULT_OK) {
                 if (this.myLocationOverlay != null) this.myLocationOverlay.setSnapToLocationEnabled(false);
-                if (intent.getStringExtra(FilePicker.SELECTED_FILE) != null) {
+                if (intent != null && intent.getStringExtra(FilePicker.SELECTED_FILE) != null) {
                     setMapFile(intent.getStringExtra(FilePicker.SELECTED_FILE));
                     Log.i("L onActivityResult", "mapFileName:" + getMapFileName());
 

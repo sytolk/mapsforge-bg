@@ -14,6 +14,7 @@
  */
 package org.mapsforge.applications.android.filefilter;
 
+import android.util.Log;
 import org.mapsforge.map.datastore.MapDataStore;
 import org.mapsforge.map.reader.MapFile;
 import org.mapsforge.map.reader.header.MapFileException;
@@ -30,14 +31,14 @@ public final class ValidMapFile implements FileFilter {
     @Override
     public boolean accept(File mapFile) {
         try {
-            MapDataStore mapDataStore = new MapFile(mapFile);
+            MapFile mapDataStore = new MapFile(mapFile);
             return true;
         } catch (MapFileException e) {
-
+            Log.e("ValidMapFile", "MapFileException:", e);
         }
         return false;
         /*MapDatabase mapDatabase = new MapDatabase();
-		this.fileOpenResult = mapDatabase.openFile(mapFile);
+        this.fileOpenResult = mapDatabase.openFile(mapFile);
 		mapDatabase.closeFile();
 		return this.fileOpenResult.isSuccess();*/
     }
