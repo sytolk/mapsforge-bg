@@ -250,11 +250,12 @@ public class FilePicker extends Activity implements AdapterView.OnItemClickListe
 	}*/
 
     private void selectFileDialog() {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle(R.string.file_select_title);
-        alertDialogBuilder.setMessage(R.string.file_select);
-        final CharSequence[] items = {"bulgaria.map", "morocco.map"};
-        alertDialogBuilder.setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
+        AlertDialog selectFileDialog;
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.file_select); //R.string.file_select_title);
+        //builder.setMessage("test");//R.string.file_select);
+        final CharSequence[] items = {"Bulgaria.map", "Morocco.map"};
+        builder.setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
 
                 switch (item) {
@@ -270,14 +271,14 @@ public class FilePicker extends Activity implements AdapterView.OnItemClickListe
             }
         });
         //null should be your on click listener
-        alertDialogBuilder.setPositiveButton(R.string.select, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.select, new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
         });
-        alertDialogBuilder.setNegativeButton(R.string.download, new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.download, new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -290,7 +291,8 @@ public class FilePicker extends Activity implements AdapterView.OnItemClickListe
                 dialog.dismiss();
             }
         });
-        alertDialogBuilder.show();
+        selectFileDialog = builder.create();
+        selectFileDialog.show();
         /*Dialog updateDialog = alertDialogBuilder.create();
 
         if (updateDialog != null) {
