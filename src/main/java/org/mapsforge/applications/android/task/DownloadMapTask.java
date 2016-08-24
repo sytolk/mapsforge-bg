@@ -2,7 +2,6 @@ package org.mapsforge.applications.android.task;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.os.Environment;
 import android.util.Log;
 
 import java.io.File;
@@ -25,8 +24,9 @@ public class DownloadMapTask extends AsyncTask<Context, Integer, File> {
     private String mapFile = "bulgaria.map";
     private Context context;
 
-    public DownloadMapTask(OnTaskCompleted listener) {
+    public DownloadMapTask(String mapFile, OnTaskCompleted listener) {
         this.listener = listener;
+        if (mapFile != null) this.mapFile = mapFile;
     }
 
     @Override

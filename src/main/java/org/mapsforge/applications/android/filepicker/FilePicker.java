@@ -253,6 +253,22 @@ public class FilePicker extends Activity implements AdapterView.OnItemClickListe
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setTitle(R.string.file_select_title);
         alertDialogBuilder.setMessage(R.string.file_select);
+        final CharSequence[] items = {"bulgaria.map", "morocco.map"};
+        alertDialogBuilder.setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+
+                switch (item) {
+                    case 0:
+                        downloadMap("bulgaria.map");
+                        dialog.dismiss();
+                        break;
+                    case 1:
+                        downloadMap("morocco.map");
+                        dialog.dismiss();
+                        break;
+                }
+            }
+        });
         //null should be your on click listener
         alertDialogBuilder.setPositiveButton(R.string.select, new DialogInterface.OnClickListener() {
 
@@ -270,7 +286,7 @@ public class FilePicker extends Activity implements AdapterView.OnItemClickListe
                     ActivityCompat.requestPermissions(FilePicker.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_WRITE_STORAGE);
                 } else downloadMap();*/
 
-                downloadMap();
+                downloadMap(null);
                 dialog.dismiss();
             }
         });
@@ -288,13 +304,13 @@ public class FilePicker extends Activity implements AdapterView.OnItemClickListe
         }*/
     }
 
-    private void downloadMap() {
+    private void downloadMap(String mapFile) {
 
         //Log.i("downloadMap", "downloadMap");
         final ProgressDialog pDialog = getProgressDialog();
         pDialog.show();
 
-        AsyncTask<Context, Integer, File> mapTask = new DownloadMapTask(new DownloadMapTask.OnTaskCompleted() {
+        AsyncTask<Context, Integer, File> mapTask = new DownloadMapTask(mapFile, new DownloadMapTask.OnTaskCompleted() {
 
             @Override
             public void onTaskCompleted(File path) {
@@ -311,7 +327,7 @@ public class FilePicker extends Activity implements AdapterView.OnItemClickListe
 
                     } catch (MapFileException e) {
                         Log.e("downloadMap", "MapFileException:", e);
-                        if(!isFinishing()) selectFileInvalidDialog();
+                        if (!isFinishing()) selectFileInvalidDialog();
                     }
                 }
                 finish();
