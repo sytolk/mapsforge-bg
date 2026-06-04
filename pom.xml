@@ -37,10 +37,10 @@
     </organization>
 
     <properties>
-        <android-platform>17</android-platform>
+        <android-platform>23</android-platform>
         <android-emulator>8</android-emulator>
         <!--<targetJdk>1.6</targetJdk>-->
-        <java.version>1.7</java.version>
+        <java.version>1.8</java.version>
     </properties>
 
     <parent>
@@ -78,13 +78,13 @@
                     <!--<genDirectory>gen</genDirectory>
                     <genDirectoryAidl>gen</genDirectoryAidl>-->
 
-                    <!--<sdk>
+                    <sdk>
                         <platform>${android-platform}</platform>
-                        <path>/home/stanimir/android-sdk-linux</path>
+                        <path>${env.ANDROID_HOME}</path>
                     </sdk>
                     <emulator>
                         <avd>${android-emulator}</avd>
-                    </emulator>-->
+                    </emulator>
                     <!--<deleteConflictingFiles>true</deleteConflictingFiles>-->
                     <undeployBeforeDeploy>true</undeployBeforeDeploy>
                     <extractDuplicates>true</extractDuplicates>
@@ -123,7 +123,8 @@
             <groupId>android</groupId>
             <artifactId>android</artifactId>
             <version>6.0_r3</version>
-            <scope>provided</scope>
+            <scope>system</scope>
+            <systemPath>${env.ANDROID_HOME}/platforms/android-23/android.jar</systemPath>
         </dependency>
 
         <!--<dependency>
@@ -176,14 +177,14 @@
 
     <repositories>
         <repository>
+            <id>google</id>
+            <name>Google Android Maven repository</name>
+            <url>https://dl.google.com/dl/android/maven2/</url>
+        </repository>
+        <repository>
             <id>snapshots-repository</id>
             <name>Sonatype oss snapshot repo</name>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </repository>
-
-        <repository>
-            <id>android-local</id>
-            <url>file:/home/stanimir/android-sdk-linux/extras/android/m2repository</url>
         </repository>
     </repositories>
 </project>
