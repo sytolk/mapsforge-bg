@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.taxi-bulgaria.map</groupId>
     <artifactId>mapsforge</artifactId>
@@ -37,7 +37,7 @@
     </organization>
 
     <properties>
-        <android-platform>17</android-platform>
+        <android-platform>24</android-platform>
         <android-emulator>8</android-emulator>
         <!--<targetJdk>1.6</targetJdk>-->
         <java.version>1.7</java.version>
@@ -120,9 +120,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>android</groupId>
+            <groupId>android-sdk</groupId>
             <artifactId>android</artifactId>
-            <version>6.0_r3</version>
+            <version>24</version>
             <scope>provided</scope>
         </dependency>
 
@@ -182,8 +182,12 @@
         </repository>
 
         <repository>
+            <id>google</id>
+            <url>https://dl.google.com/dl/android/maven2</url>
+        </repository>
+        <!-- <repository>
             <id>android-local</id>
             <url>file:/home/stanimir/android-sdk-linux/extras/android/m2repository</url>
-        </repository>
+        </repository> -->
     </repositories>
 </project>
